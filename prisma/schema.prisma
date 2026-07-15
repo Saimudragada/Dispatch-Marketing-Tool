@@ -1,0 +1,34 @@
+// Skeleton schema — Claude Code should implement this at Step 2 of build-plan.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Channel {
+  BLOG
+  LINKEDIN
+  EMAIL
+}
+
+enum Status {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+model ContentPiece {
+  id            String   @id @default(cuid())
+  title         String
+  channel       Channel
+  status        Status   @default(DRAFT)
+  scheduledDate DateTime
+  body          String   @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
