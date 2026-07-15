@@ -74,63 +74,67 @@ export default async function CalendarPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {WEEKDAYS.map((day) => (
-          <div key={day}>{day}</div>
-        ))}
-      </div>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <div className="min-w-[640px]">
+          <div className="grid grid-cols-7 gap-2 text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {WEEKDAYS.map((day) => (
+              <div key={day}>{day}</div>
+            ))}
+          </div>
 
-      <div className="flex flex-col gap-3">
-        {weeks.map((week, i) => {
-          const weekHasContent = week.some((day) => byDate.has(dateKey(day)));
+          <div className="mt-3 flex flex-col gap-3">
+            {weeks.map((week, i) => {
+              const weekHasContent = week.some((day) => byDate.has(dateKey(day)));
 
-          return (
-            <div
-              key={i}
-              className={cn(
-                "grid grid-cols-7 gap-2 rounded-lg p-1.5",
-                !weekHasContent && "border border-amber-400/70 bg-amber-50/50"
-              )}
-            >
-              {week.map((day) => {
-                const inMonth = day.getUTCMonth() === monthIndex;
-                const key = dateKey(day);
-                const dayPieces = byDate.get(key) ?? [];
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "grid grid-cols-7 gap-2 rounded-lg p-1.5",
+                    !weekHasContent && "border border-amber-400/70 bg-amber-50/50"
+                  )}
+                >
+                  {week.map((day) => {
+                    const inMonth = day.getUTCMonth() === monthIndex;
+                    const key = dateKey(day);
+                    const dayPieces = byDate.get(key) ?? [];
 
-                return (
-                  <div
-                    key={key}
-                    className={cn(
-                      "flex min-h-28 flex-col gap-1 rounded-md border border-border bg-card p-2",
-                      !inMonth && "bg-secondary/40"
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "text-xs",
-                        inMonth ? "text-foreground" : "text-muted-foreground/50"
-                      )}
-                    >
-                      {day.getUTCDate()}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      {dayPieces.map((piece) => (
-                        <Link
-                          key={piece.id}
-                          href={`/${piece.id}`}
-                          title={piece.title}
-                          className="truncate rounded-md bg-secondary px-1.5 py-0.5 text-[11px] font-medium text-foreground hover:bg-accent"
+                    return (
+                      <div
+                        key={key}
+                        className={cn(
+                          "flex min-h-28 flex-col gap-1 rounded-md border border-border bg-card p-2",
+                          !inMonth && "bg-secondary/40"
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "text-xs",
+                            inMonth ? "text-foreground" : "text-muted-foreground/50"
+                          )}
                         >
-                          {CHANNEL_LABEL[piece.channel]}: {piece.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+                          {day.getUTCDate()}
+                        </span>
+                        <div className="flex flex-col gap-1">
+                          {dayPieces.map((piece) => (
+                            <Link
+                              key={piece.id}
+                              href={`/${piece.id}`}
+                              title={piece.title}
+                              className="truncate rounded-md bg-secondary px-1.5 py-0.5 text-[11px] font-medium text-foreground hover:bg-accent"
+                            >
+                              {CHANNEL_LABEL[piece.channel]}: {piece.title}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {anyEmptyWeek ? (
