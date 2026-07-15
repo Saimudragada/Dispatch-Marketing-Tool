@@ -16,6 +16,9 @@ build/
 .env.local
 .env.*.local
 
+# deliverable draft — contains real login credentials, never commit
+DELIVERABLE_EMAIL_DRAFT.md
+
 # misc
 .DS_Store
 *.pem

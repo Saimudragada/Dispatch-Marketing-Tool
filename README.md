@@ -1,7 +1,33 @@
 # Dispatch — GenHealth Marketing Command Center
 
-Content library, AI drafting, and calendar tool for GenHealth's marketing team. Built as a
+A content library, AI drafting tool, and calendar for GenHealth's marketing team. Built as a
 timeboxed take-home assessment.
+
+## What this is
+
+Most "AI content tool" demos generate a draft and stop there. Dispatch is built around the parts
+of a real marketing workflow that actually break: keeping facts straight when the same story gets
+told on three channels, keeping the brand voice consistent instead of drifting toward generic
+AI copy, and being able to see at a glance where the content pipeline has gone quiet.
+
+## Why it's different
+
+- **Fact-anchored repurposing.** Turning a LinkedIn post into an email and a blog outline is
+  the easiest place for AI tools to quietly invent or round a number. Repurposing here is
+  explicitly instructed to preserve every stat, name, and quote from the source piece exactly —
+  only structure and length change per channel.
+- **The brand voice is grounded, not guessed.** Every generation call injects the full contents
+  of the brand-voice reference file into the system prompt — the model never works from a
+  paraphrased summary of the rules. Generated drafts carry a citation-style footnote ("Generated
+  from: topic, channel"), so it's always traceable what a draft came from, echoing GenHealth's
+  own citation-driven UI.
+- **It looks like GenHealth, not a SaaS template.** Off-white background, one muted-green accent
+  used sparingly, status as plain pills instead of colorful chips, bordered cards instead of dense
+  tables — matching the calm, data-forward style of GenHealth's actual site rather than a generic
+  admin dashboard.
+- **The calendar flags gaps, not just dates.** A month can look "fine" in a list view while
+  actually having two dead weeks with nothing scheduled. Empty weeks get a visible amber outline
+  instead of silently doing nothing.
 
 ## Stack
 
@@ -31,5 +57,4 @@ The one auth user is created via the Supabase Admin API (or dashboard) — there
 
 Core CRUD, the auth gate, calendar gap-highlighting, and the AI generation/repurposing pipeline
 were treated as non-negotiable — everything else (analytics, SEO, rate limiting, richer editing)
-was deliberately left out of scope for this timebox. See the note sent alongside the deployment
-link for the full reasoning.
+was deliberately left out of scope for this timebox.
