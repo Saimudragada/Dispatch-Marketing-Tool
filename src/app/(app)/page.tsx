@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { ContentCard } from "@/components/content-card";
 
+export const dynamic = "force-dynamic";
+
 export default async function LibraryPage() {
   const pieces = await prisma.contentPiece.findMany({
     orderBy: { scheduledDate: "desc" },

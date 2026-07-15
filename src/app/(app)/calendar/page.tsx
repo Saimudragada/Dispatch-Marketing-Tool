@@ -4,6 +4,8 @@ import { getMonthGrid, dateKey } from "@/lib/calendar";
 import { CHANNEL_LABEL } from "@/lib/labels";
 import { cn } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default async function CalendarPage({

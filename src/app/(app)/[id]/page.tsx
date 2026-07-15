@@ -4,6 +4,8 @@ import { ContentForm } from "@/components/content-form";
 import { RepurposePanel } from "@/components/repurpose-panel";
 import { updateContentPiece } from "@/lib/actions/content";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditContentPage({
   params,
 }: {
