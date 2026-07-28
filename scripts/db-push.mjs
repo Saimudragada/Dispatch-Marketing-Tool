@@ -27,7 +27,10 @@ if (DATABASE_URL) {
 for (const { label, url } of candidates) {
   console.log(`db-push: trying ${label}…`);
   try {
-    execSync("npx prisma db push --skip-generate", {
+    // --accept-data-loss: the repo schema is canonical for this single-tenant
+    // demo deployment; it lets db push drop stray/vestigial enum values or
+    // columns that drifted into the database outside the repo.
+    execSync("npx prisma db push --skip-generate --accept-data-loss", {
       stdio: "inherit",
       env: { ...process.env, DATABASE_URL: url, DIRECT_URL: url },
     });
