@@ -27,8 +27,12 @@ if (DATABASE_URL) {
 for (const { label, url } of candidates) {
   console.log(`db-push: trying ${label}…`);
   try {
+    // timeout: a hung connection (e.g. DDL through a transaction pooler) must
+    // fail over to the next candidate, not stall the build until Vercel kills it.
     execSync("npx prisma db push --skip-generate", {
       stdio: "inherit",
+      timeout: 90_000,
+      killSignal: "SIGKILL",
       env: { ...process.env, DATABASE_URL: url, DIRECT_URL: url },
     });
     console.log(`db-push: schema applied via ${label}.`);
