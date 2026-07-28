@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-display: var(--font-fraunces);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +39,17 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-flame: var(--flame);
+  --color-flame-soft: var(--flame-soft);
+  --color-moss: var(--moss);
+  --color-moss-soft: var(--moss-soft);
+  --color-honey: var(--honey);
+  --color-honey-soft: var(--honey-soft);
+  --color-ch-blog: var(--ch-blog);
+  --color-ch-linkedin: var(--ch-linkedin);
+  --color-ch-email: var(--ch-email);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -49,39 +60,52 @@
 }
 
 :root {
-  /* GenHealth-inspired palette: off-white/cream base, single muted-green accent, restrained */
-  --background: #faf9f5;
-  --foreground: #1c1c1a;
-  --card: #ffffff;
-  --card-foreground: #1c1c1a;
-  --popover: #ffffff;
-  --popover-foreground: #1c1c1a;
-  --primary: #a8fc8f;
-  --primary-foreground: #14251a;
-  --secondary: #f1efe7;
-  --secondary-foreground: #1c1c1a;
-  --muted: #f1efe7;
-  --muted-foreground: #6b6b63;
-  --accent: #eaf9e3;
-  --accent-foreground: #1c1c1a;
-  --destructive: #c4433a;
-  --border: #e4e1d6;
-  --input: #e4e1d6;
-  --ring: #a8fc8f;
-  --chart-1: #a8fc8f;
-  --chart-2: #6b6b63;
-  --chart-3: #1c1c1a;
-  --chart-4: #c4433a;
-  --chart-5: #e4e1d6;
+  /* Dispatch "editorial studio" palette: warm paper canvas, ink text,
+     one flame accent for action, moss/honey for state. */
+  --paper: #faf6ee;
+  --ink: #1c1712;
+  --flame: #e4572e;
+  --flame-soft: #fbe9e0;
+  --moss: #2e7d43;
+  --moss-soft: #e6f2e4;
+  --honey: #a97a0b;
+  --honey-soft: #faf0d7;
+  --ch-blog: #7a4fc9;
+  --ch-linkedin: #2e6ac7;
+  --ch-email: #0e8a78;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #fffcf5;
+  --card-foreground: var(--ink);
+  --popover: #fffcf5;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: #f1eadb;
+  --secondary-foreground: var(--ink);
+  --muted: #f1eadb;
+  --muted-foreground: #6e675a;
+  --accent: var(--flame-soft);
+  --accent-foreground: #b23b16;
+  --destructive: #c0392b;
+  --border: #e6decd;
+  --input: #e6decd;
+  --ring: var(--flame);
+  --chart-1: var(--flame);
+  --chart-2: var(--moss);
+  --chart-3: var(--ch-linkedin);
+  --chart-4: var(--ch-blog);
+  --chart-5: var(--honey);
   --radius: 0.5rem;
-  --sidebar: #faf9f5;
-  --sidebar-foreground: #1c1c1a;
-  --sidebar-primary: #a8fc8f;
-  --sidebar-primary-foreground: #14251a;
-  --sidebar-accent: #eaf9e3;
-  --sidebar-accent-foreground: #1c1c1a;
-  --sidebar-border: #e4e1d6;
-  --sidebar-ring: #a8fc8f;
+  --sidebar: var(--ink);
+  --sidebar-foreground: var(--paper);
+  --sidebar-primary: var(--flame);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2b241d;
+  --sidebar-accent-foreground: var(--paper);
+  --sidebar-border: #3a322a;
+  --sidebar-ring: var(--flame);
 }
 
 @layer base {
@@ -93,5 +117,28 @@
   }
   html {
     @apply font-sans;
+  }
+  ::selection {
+    background: var(--flame);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-fraunces), Georgia, serif;
+  }
+  /* Faint dot-grid texture for the canvas — keeps the paper from feeling flat. */
+  .bg-dotgrid {
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 7%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .kicker {
+    font-family: var(--font-geist-mono), monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--flame);
   }
 }

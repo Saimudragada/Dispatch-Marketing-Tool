@@ -1,10 +1,12 @@
 import { ContentPiece } from "@prisma/client";
-import { Button } from "@/components/ui/button";
-import { CHANNEL_LABEL, CHANNELS } from "@/lib/labels";
+import { CHANNEL_LABEL, CHANNELS, STATUSES, STATUS_LABEL } from "@/lib/labels";
 
 function toDateInputValue(date: Date) {
   return date.toISOString().slice(0, 10);
 }
+
+const inputClass =
+  "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring";
 
 export function ContentForm({
   action,
@@ -27,7 +29,7 @@ export function ContentForm({
           type="text"
           required
           defaultValue={defaultValues?.title}
-          className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+          className={inputClass}
         />
       </div>
 
@@ -39,8 +41,8 @@ export function ContentForm({
           <select
             id="channel"
             name="channel"
-            defaultValue={defaultValues?.channel ?? "BLOG"}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+            defaultValue={defaultValues?.channel ?? "LINKEDIN"}
+            className={inputClass}
           >
             {CHANNELS.map((channel) => (
               <option key={channel} value={channel}>
@@ -58,11 +60,13 @@ export function ContentForm({
             id="status"
             name="status"
             defaultValue={defaultValues?.status ?? "DRAFT"}
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+            className={inputClass}
           >
-            <option value="DRAFT">Draft</option>
-            <option value="SCHEDULED">Scheduled</option>
-            <option value="PUBLISHED">Published</option>
+            {STATUSES.map((s) => (
+              <option key={s} value={s}>
+                {STATUS_LABEL[s]}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -78,7 +82,7 @@ export function ContentForm({
             defaultValue={
               defaultValues ? toDateInputValue(defaultValues.scheduledDate) : toDateInputValue(new Date())
             }
-            className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+            className={inputClass}
           />
         </div>
       </div>
@@ -90,16 +94,19 @@ export function ContentForm({
         <textarea
           id="body"
           name="body"
-          rows={12}
+          rows={14}
           defaultValue={defaultValues?.body}
-          className="rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+          className={`${inputClass} leading-relaxed`}
         />
       </div>
 
       <div>
-        <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90">
+        <button
+          type="submit"
+          className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/85"
+        >
           {submitLabel}
-        </Button>
+        </button>
       </div>
     </form>
   );

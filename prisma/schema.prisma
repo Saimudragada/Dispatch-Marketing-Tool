@@ -1,5 +1,3 @@
-// Skeleton schema — Claude Code should implement this at Step 2 of build-plan.md
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -31,4 +29,21 @@ model ContentPiece {
   body          String   @db.Text
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+enum IdeaStatus {
+  SPARK
+  SHAPING
+  DRAFTED
+}
+
+model Idea {
+  id        String     @id @default(cuid())
+  title     String
+  notes     String     @default("") @db.Text
+  channel   Channel?
+  status    IdeaStatus @default(SPARK)
+  source    String     @default("MANUAL")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }

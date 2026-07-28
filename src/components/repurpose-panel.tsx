@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Repeat } from "lucide-react";
+import { Repeat, ShieldCheck } from "lucide-react";
 import { ContentPiece, Channel } from "@prisma/client";
-import { Button } from "@/components/ui/button";
 import { createContentPiece } from "@/lib/actions/content";
 import { CHANNEL_LABEL } from "@/lib/labels";
 
@@ -45,35 +44,37 @@ export function RepurposePanel({ piece }: { piece: ContentPiece }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg border border-border bg-card p-5">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-sm font-medium text-foreground">
-          <Repeat className="size-4" />
-          Repurpose to other channels
+    <div className="flex flex-col gap-4 rounded-xl border border-border bg-card p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-foreground">
+            <Repeat className="size-4 text-flame" />
+            One story, three channels
+          </div>
+          <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+            <ShieldCheck className="size-3.5 text-moss" />
+            Fact-anchored: every number, name, and claim carries over exactly. Nothing invented,
+            nothing rounded.
+          </p>
         </div>
-        <Button
+        <button
           type="button"
           onClick={handleRepurpose}
           disabled={isLoading}
-          className="bg-primary text-primary-foreground hover:bg-primary/90"
+          className="rounded-lg bg-flame px-4 py-2.5 text-sm font-semibold text-white hover:bg-flame/90 disabled:opacity-60"
         >
-          {isLoading ? "Repurposing…" : "Repurpose"}
-        </Button>
+          {isLoading ? "Repurposing…" : "Repurpose this piece"}
+        </button>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Generates the other two channel versions, preserving every number, name, and claim from
-        this piece exactly.
-      </p>
-
       {error ? (
-        <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {error}
         </p>
       ) : null}
 
       {results ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {results.map((result) => (
             <RepurposeResultForm
               key={result.channel}
@@ -106,10 +107,10 @@ function RepurposeResultForm({
   return (
     <form
       action={createContentPiece}
-      className="flex flex-col gap-2 rounded-md border border-border p-3"
+      className="flex flex-col gap-2 rounded-lg border border-border bg-background p-4"
     >
-      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        {CHANNEL_LABEL[channel]}
+      <span className="font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-flame">
+        → {CHANNEL_LABEL[channel]} version
       </span>
       <input type="hidden" name="channel" value={channel} />
       <input type="hidden" name="status" value="DRAFT" />
@@ -118,21 +119,21 @@ function RepurposeResultForm({
         name="title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="rounded-md border border-input bg-background px-2 py-1.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+        className="rounded-lg border border-input bg-card px-2.5 py-1.5 text-sm font-medium text-foreground outline-none focus:ring-2 focus:ring-ring"
       />
       <textarea
         name="body"
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        rows={8}
-        className="rounded-md border border-input bg-background px-2 py-1.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+        rows={9}
+        className="rounded-lg border border-input bg-card px-2.5 py-1.5 text-sm leading-relaxed text-foreground outline-none focus:ring-2 focus:ring-ring"
       />
-      <Button
+      <button
         type="submit"
-        className="self-start bg-primary text-primary-foreground hover:bg-primary/90"
+        className="self-start rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/85"
       >
-        Save as new piece
-      </Button>
+        Save as new draft
+      </button>
     </form>
   );
 }

@@ -15,14 +15,19 @@ function parseContentForm(formData: FormData) {
   };
 }
 
+function revalidateContent() {
+  revalidatePath("/");
+  revalidatePath("/library");
+  revalidatePath("/calendar");
+}
+
 export async function createContentPiece(formData: FormData) {
   const data = parseContentForm(formData);
 
   await prisma.contentPiece.create({ data });
 
-  revalidatePath("/");
-  revalidatePath("/calendar");
-  redirect("/");
+  revalidateContent();
+  redirect("/library");
 }
 
 export async function updateContentPiece(id: string, formData: FormData) {
@@ -30,21 +35,18 @@ export async function updateContentPiece(id: string, formData: FormData) {
 
   await prisma.contentPiece.update({ where: { id }, data });
 
-  revalidatePath("/");
-  revalidatePath("/calendar");
-  redirect("/");
+  revalidateContent();
+  redirect("/library");
 }
 
 export async function deleteContentPiece(id: string) {
   await prisma.contentPiece.delete({ where: { id } });
 
-  revalidatePath("/");
-  revalidatePath("/calendar");
+  revalidateContent();
 }
 
 export async function updateStatus(id: string, status: Status) {
   await prisma.contentPiece.update({ where: { id }, data: { status } });
 
-  revalidatePath("/");
-  revalidatePath("/calendar");
+  revalidateContent();
 }

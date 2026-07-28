@@ -1,60 +1,60 @@
-# Dispatch — GenHealth Marketing Command Center
+# Dispatch — Marketing Command Center
 
-A content library, AI drafting tool, and calendar for GenHealth's marketing team. Built as a
-timeboxed take-home assessment.
+An enterprise-grade internal tool for marketing teams: one place to plan the calendar, draft
+in brand voice with AI, bank and brainstorm ideas, and repurpose content across channels
+without losing a single fact.
 
-## What this is
+**Live:** https://dispatch-marketing-tool.vercel.app — no login required.
 
-Most "AI content tool" demos generate a draft and stop there. Dispatch is built around the parts
-of a real marketing workflow that actually break: keeping facts straight when the same story gets
-told on three channels, keeping the brand voice consistent instead of drifting toward generic
-AI copy, and being able to see at a glance where the content pipeline has gone quiet.
+## What's inside
 
-## Why it's different
+- **Dashboard** — pipeline health at a glance: drafts in the works, what's scheduled, what
+  shipped, the channel mix, the next seven days, and a loud warning when the next two weeks
+  are silent.
+- **Content library** — every piece on file, full-text searchable, filterable by channel and
+  status. Cards, not spreadsheets.
+- **Drafting studio** — topic + channel in, first draft out. Every generation call injects the
+  complete brand-voice reference file into the system prompt, so drafts sound like the house,
+  not like generic AI. Generated drafts carry a citation tag ("Generated from: topic, channel").
+- **Idea bank** — capture sparks before they evaporate, or let the AI brainstorm six stat-led
+  angles at a time. Ideas move Spark → Shaping → Drafted, and promote straight into the
+  drafting studio with one click.
+- **Editorial calendar** — month grid with channel-coded entries. Weeks with nothing scheduled
+  get flagged as gap weeks, because a quiet calendar is how audiences forget you exist.
+- **Fact-anchored repurposing** — one story, three channels. The repurpose engine is explicitly
+  instructed to preserve every number, name, and claim from the source exactly — only structure,
+  length, and framing change per channel.
 
-- **Fact-anchored repurposing.** Turning a LinkedIn post into an email and a blog outline is
-  the easiest place for AI tools to quietly invent or round a number. Repurposing here is
-  explicitly instructed to preserve every stat, name, and quote from the source piece exactly —
-  only structure and length change per channel.
-- **The brand voice is grounded, not guessed.** Every generation call injects the full contents
-  of the brand-voice reference file into the system prompt — the model never works from a
-  paraphrased summary of the rules. Generated drafts carry a citation-style footnote ("Generated
-  from: topic, channel"), so it's always traceable what a draft came from, echoing GenHealth's
-  own citation-driven UI.
-- **It looks like GenHealth, not a SaaS template.** Off-white background, one muted-green accent
-  used sparingly, status as plain pills instead of colorful chips, bordered cards instead of dense
-  tables — matching the calm, data-forward style of GenHealth's actual site rather than a generic
-  admin dashboard.
-- **The calendar flags gaps, not just dates.** A month can look "fine" in a list view while
-  actually having two dead weeks with nothing scheduled. Empty weeks get a visible amber outline
-  instead of silently doing nothing.
+## Design
+
+Editorial-studio personality rather than SaaS-template gray: warm paper canvas with a faint
+dot grid, ink sidebar, Fraunces display serif for headlines and big numerals, one flame-orange
+accent for action, channel-coded dots everywhere a piece appears, and status pills that read
+at a glance. Microcopy has a point of view.
 
 ## Stack
 
-- Next.js 16 (App Router) + TypeScript + Tailwind + shadcn/ui
-- Supabase Postgres, accessed via Prisma ORM
-- Supabase Auth (single pre-created user, full-app gate — no sign-up flow)
-- Anthropic API (`@anthropic-ai/sdk`, model `claude-sonnet-5`) for draft generation and repurposing
+- Next.js 16 (App Router) + TypeScript + Tailwind CSS 4
+- Postgres (Supabase) via Prisma ORM
+- Anthropic API (`@anthropic-ai/sdk`, model `claude-sonnet-5`) for drafting, brainstorming,
+  and repurposing — server-side only
 - Deployed on Vercel
 
 ## Local setup
 
 1. Copy `.env.example` to `.env.local` and fill in real values:
-   - `DATABASE_URL` / `DIRECT_URL` — Supabase connection pooler strings (Settings → Database → Connect).
-     Use the **transaction pooler** (port 6543) for `DATABASE_URL` and the **session pooler**
-     (port 5432) for `DIRECT_URL` — the direct connection host is IPv6-only and won't resolve
-     from most local networks or CI runners.
-   - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` —
-     Settings → API.
+   - `DATABASE_URL` / `DIRECT_URL` — Postgres connection strings (for Supabase, use the
+     transaction pooler on 6543 for `DATABASE_URL` and the session pooler on 5432 for `DIRECT_URL`).
    - `ANTHROPIC_API_KEY` — server-only, never exposed to the client.
 2. Install dependencies: `npm install`
-3. Push the schema to your database: `npx dotenv -e .env.local -- npx prisma db push`
+3. Push the schema: `npx dotenv -e .env.local -- npx prisma db push`
 4. Run the dev server: `npm run dev`
 
-The one auth user is created via the Supabase Admin API (or dashboard) — there's no sign-up route.
+On Vercel, the `vercel-build` script runs `prisma db push` before `next build`, so additive
+schema changes apply to the production database automatically on deploy.
 
-## What was prioritized
+## A note on access
 
-Core CRUD, the auth gate, calendar gap-highlighting, and the AI generation/repurposing pipeline
-were treated as non-negotiable — everything else (analytics, SEO, rate limiting, richer editing)
-was deliberately left out of scope for this timebox.
+This deployment is intentionally public — it's a showcase build. There is no auth gate, which
+means anyone with the URL can read and write content. Don't put anything in it you'd mind
+losing or sharing.
